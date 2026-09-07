@@ -1,1 +1,26 @@
-/* Your CSS here. */
+.bio-card {
+    background-color: #4A5D63;
+    padding: 20px;
+    margin: 50px auto;
+    max-width: 700px;
+    text-align: center;
+    color: white;
+}
+
+img {
+    height: 150px;
+    width: 150px;
+}
+
+.email {
+    font-style: italic;
+    text-align: center;
+}
+
+a {
+    font-weight: bold;
+}
+
+p {
+    text-align: left;
+}
