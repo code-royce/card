@@ -9,23 +9,31 @@
 </head>
 
 <body>
-  <div class="bio-card">
+  <div id="bio-card">
     <img
       id="profile-photo"
       src="assets/image_jroyce.jpg"
       alt="Jeffry Royce headshot"
     />
-    <h1>Jeffry Royce</h1>
-    <p class="email">jroyce@illinois.edu</p>
-    <p class="link">
-      <a href="https://github.com/code-royce">GitHub</a>
-    </p>
-    <p>
-      Master of Computer Science (MCS) student at the University of Illinois Urbana-Champaign. I work with my advisor, Abdu Alawini, on research involving knowledge graph extraction and AI assisted education tools. Generally, I am interested in learning more about machine learning and robotics.
-    </p>
-    <p>
-      Currently, I serve as the Assistant Director of Infrastructure and Facility Operations at the Siebel School of Computing and Data Science. I hold a B.S. in Mathematics from Northern Illinois University and completed the iCAN graduate certificate at UIUC in 2026.
-    </p>
+    <h1 id="profile-name">Jeffry Royce</h1>
+
+    <!-- Hidden by default until image/name is clicked -->
+    <div id="details"class="hidden">
+      <p class="email">jroyce@illinois.edu</p>
+      <p class="link">
+        <a href="https://github.com/code-royce">GitHub</a>
+      </p>
+      <p>
+        Master of Computer Science (MCS) student at the University of Illinois Urbana-Champaign. I work with my advisor, Abdu Alawini, on research involving knowledge graph extraction and AI assisted education tools. Generally, I am interested in learning more about machine learning and robotics.
+      </p>
+      <p>
+        Currently, I serve as the Assistant Director of Infrastructure and Facility Operations at the Siebel School of Computing and Data Science. I hold a B.S. in Mathematics from Northern Illinois University and completed the iCAN graduate certificate at UIUC in 2026.
+      </p>
+    </div>
+
+    <button id="orange">Orange</button>
+    <button id="blue">Blue</button>
+    <button id="gray">Grey</button>
   </div>
   <script src="bundle.js" type="text/javascript"></script>
 </body>
