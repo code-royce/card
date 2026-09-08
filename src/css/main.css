@@ -7,13 +7,17 @@
     color: white;
 }
 
-img {
+#profile-photo {
     height: 150px;
     width: 150px;
 }
 
 .email {
     font-style: italic;
+    text-align: center;
+}
+
+.link {
     text-align: center;
 }
 
