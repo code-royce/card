@@ -9,10 +9,8 @@ const CONTACT_PATH = path.resolve(__dirname, 'src/contact.json');
 const PHOTO_PATH = path.resolve(__dirname, 'src', contact.photo);
 const VCARD_FILE = `${contact.firstName}-${contact.lastName}.vcf`.toLowerCase();
 
-// vCard text values escape backslashes, commas, semicolons and newlines.
+// vCard escaping and 75-char line folding.
 const esc = (value) => String(value).replace(/[\\,;]/g, (c) => `\\${c}`).replace(/\n/g, '\\n');
-
-// Lines longer than 75 characters continue on the next line after a space.
 const fold = (line) => line.match(/.{1,74}/g).join('\r\n ');
 
 function buildVCard(info, photoBase64) {
@@ -35,7 +33,7 @@ function buildVCard(info, photoBase64) {
   return lines.map(fold).join('\r\n') + '\r\n';
 }
 
-// Emits the "Save contact" vCard from src/contact.json and the photo, in dev and in the build.
+// Emits the Save contact vCard.
 class VCardPlugin {
   apply(compiler) {
     const { Compilation, sources } = compiler.webpack;
@@ -79,7 +77,6 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new CleanWebpackPlugin(),
-      // index.html is a template filled in from src/contact.json.
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'src/index.html'),
         inject: 'body',

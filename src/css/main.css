@@ -1,4 +1,4 @@
-/* Palette and type, shared with the personal site (mp1). */
+/* Palette shared with mp1 */
 :root {
     --charcoal: #1E1F24;
     --slate: #2C2E35;
@@ -83,7 +83,7 @@ button {
     width: min(100%, 380px);
 }
 
-/* Both faces sit in the same grid cell, so the card is as tall as its taller face. */
+/* Faces share one grid cell */
 .card {
     display: grid;
     transform-style: preserve-3d;
@@ -110,7 +110,6 @@ button {
     position: relative;
 }
 
-/* The gradient edge along the top of each face. */
 .face::before {
     background: var(--gradient);
     content: '';
@@ -262,7 +261,6 @@ button {
     margin-top: 6px;
 }
 
-/* QR on a white tile so phone cameras read it easily. */
 .qr {
     align-items: center;
     display: flex;
@@ -332,7 +330,6 @@ button {
     color: var(--hot-pink);
 }
 
-/* The one loud button. */
 .save {
     align-items: center;
     background: var(--gradient);
@@ -363,7 +360,7 @@ button {
     transform: translateY(1px);
 }
 
-/* Short screens: tighten the back so it still fits without scrolling. */
+/* Short screens */
 @media (max-height: 700px) {
     .back {
         gap: 14px;
@@ -391,7 +388,7 @@ button {
     outline: none;
 }
 
-/* ---------- Reduced motion: no tilt, crossfade instead of flip ---------- */
+/* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
     .tilt,

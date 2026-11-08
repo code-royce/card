@@ -1,6 +1,6 @@
 import qrcode from 'qrcode-generator';
 
-// Flip the card between the front (who) and the back (how to reach me).
+// Flip card.
 const card = document.getElementById('card');
 const front = document.getElementById('front');
 const back = document.getElementById('back');
@@ -11,20 +11,18 @@ function setFlipped(flipped, moveFocus) {
     card.classList.toggle('flipped', flipped);
     openButton.setAttribute('aria-expanded', String(flipped));
 
-    // Only the visible face can be reached by keyboard or screen reader.
+    // Only the visible face is focusable.
     front.inert = flipped;
     back.inert = !flipped;
     front.setAttribute('aria-hidden', String(flipped));
     back.setAttribute('aria-hidden', String(!flipped));
 
-    // Keyboard users land on the button for the face they just turned to.
     if (moveFocus) {
         (flipped ? closeButton : openButton).focus({ preventScroll: true });
     }
 }
 
-// The whole front is a tap target. The button inside it bubbles up here too.
-// event.detail is 0 when a click comes from the keyboard (Enter or Space).
+// detail is 0 for keyboard clicks.
 front.addEventListener('click', (event) => setFlipped(true, event.detail === 0));
 closeButton.addEventListener('click', (event) => setFlipped(false, event.detail === 0));
 
@@ -34,8 +32,7 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-
-// Tilt toward the mouse on desktop. Off for touch and for reduced motion.
+// Desktop tilt.
 const tilt = document.getElementById('tilt');
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -54,7 +51,7 @@ function onPointerMove(event) {
     frame = requestAnimationFrame(() => {
         frame = null;
         const box = tilt.getBoundingClientRect();
-        // -1 to 1 from the card's center, clamped so far-off pointers don't overdo it.
+        // -1 to 1 from center.
         const x = Math.max(-1, Math.min(1, (event.clientX - (box.left + box.width / 2)) / box.width));
         const y = Math.max(-1, Math.min(1, (event.clientY - (box.top + box.height / 2)) / box.height));
         tilt.style.setProperty('--rx', `${(-y * MAX_TILT).toFixed(2)}deg`);
@@ -66,8 +63,7 @@ window.addEventListener('pointermove', onPointerMove);
 document.documentElement.addEventListener('pointerleave', resetTilt);
 reducedMotion.addEventListener('change', resetTilt);
 
-
-// QR code pointing back at this page, wherever it's hosted. Drawn locally, no API calls.
+// QR code for this page's URL.
 function renderQr() {
     const url = window.location.origin + window.location.pathname;
     const qr = qrcode(0, 'M');
@@ -82,7 +78,7 @@ function renderQr() {
         }
     }
 
-    // A two-module margin inside the white tile keeps the quiet zone scanners need.
+    // Two-module quiet zone.
     const box = size + 4;
     document.getElementById('qr').innerHTML =
         `<svg viewBox="-2 -2 ${box} ${box}" shape-rendering="crispEdges" aria-hidden="true">` +
