@@ -1,3 +1,5 @@
+import qrcode from 'qrcode-generator';
+
 // Flip the card between the front (who) and the back (how to reach me).
 const card = document.getElementById('card');
 const front = document.getElementById('front');
@@ -63,3 +65,28 @@ function onPointerMove(event) {
 window.addEventListener('pointermove', onPointerMove);
 document.documentElement.addEventListener('pointerleave', resetTilt);
 reducedMotion.addEventListener('change', resetTilt);
+
+
+// QR code pointing back at this page, wherever it's hosted. Drawn locally, no API calls.
+function renderQr() {
+    const url = window.location.origin + window.location.pathname;
+    const qr = qrcode(0, 'M');
+    qr.addData(url);
+    qr.make();
+
+    const size = qr.getModuleCount();
+    let path = '';
+    for (let row = 0; row < size; row++) {
+        for (let col = 0; col < size; col++) {
+            if (qr.isDark(row, col)) path += `M${col} ${row}h1v1h-1z`;
+        }
+    }
+
+    // A two-module margin inside the white tile keeps the quiet zone scanners need.
+    const box = size + 4;
+    document.getElementById('qr').innerHTML =
+        `<svg viewBox="-2 -2 ${box} ${box}" shape-rendering="crispEdges" aria-hidden="true">` +
+        `<path d="${path}" fill="#1E1F24"/></svg>`;
+}
+
+renderQr();

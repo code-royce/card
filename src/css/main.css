@@ -262,6 +262,35 @@ button {
     margin-top: 6px;
 }
 
+/* QR on a white tile so phone cameras read it easily. */
+.qr {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+}
+
+.qr-tile {
+    background: #fff;
+    border-radius: 14px;
+    height: 156px;
+    padding: 6px;
+    width: 156px;
+}
+
+.qr-tile svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.qr figcaption {
+    color: var(--mid-gray);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+}
+
 .links {
     border-top: 1px solid var(--line);
     list-style: none;
@@ -332,6 +361,23 @@ button {
 
 .save:active {
     transform: translateY(1px);
+}
+
+/* Short screens: tighten the back so it still fits without scrolling. */
+@media (max-height: 700px) {
+    .back {
+        gap: 14px;
+        padding-top: 22px;
+    }
+
+    .qr-tile {
+        height: 124px;
+        width: 124px;
+    }
+
+    .links a {
+        min-height: 44px;
+    }
 }
 
 /* ---------- Focus ---------- */
