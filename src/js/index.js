@@ -5,7 +5,7 @@ const back = document.getElementById('back');
 const openButton = document.getElementById('flip-open');
 const closeButton = document.getElementById('flip-close');
 
-function setFlipped(flipped) {
+function setFlipped(flipped, moveFocus) {
     card.classList.toggle('flipped', flipped);
     openButton.setAttribute('aria-expanded', String(flipped));
 
@@ -15,16 +15,20 @@ function setFlipped(flipped) {
     front.setAttribute('aria-hidden', String(flipped));
     back.setAttribute('aria-hidden', String(!flipped));
 
-    (flipped ? closeButton : openButton).focus({ preventScroll: true });
+    // Keyboard users land on the button for the face they just turned to.
+    if (moveFocus) {
+        (flipped ? closeButton : openButton).focus({ preventScroll: true });
+    }
 }
 
 // The whole front is a tap target. The button inside it bubbles up here too.
-front.addEventListener('click', () => setFlipped(true));
-closeButton.addEventListener('click', () => setFlipped(false));
+// event.detail is 0 when a click comes from the keyboard (Enter or Space).
+front.addEventListener('click', (event) => setFlipped(true, event.detail === 0));
+closeButton.addEventListener('click', (event) => setFlipped(false, event.detail === 0));
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && card.classList.contains('flipped')) {
-        setFlipped(false);
+        setFlipped(false, true);
     }
 });
 

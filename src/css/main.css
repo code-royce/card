@@ -303,6 +303,37 @@ button {
     color: var(--hot-pink);
 }
 
+/* The one loud button. */
+.save {
+    align-items: center;
+    background: var(--gradient);
+    border-radius: 14px;
+    box-shadow: 0 10px 24px -10px rgba(255, 46, 136, 0.6);
+    color: var(--charcoal);
+    display: flex;
+    font-size: 1.05rem;
+    font-weight: 700;
+    gap: 10px;
+    justify-content: center;
+    margin-top: auto;
+    min-height: 54px;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.save .icon {
+    stroke-width: 2.5;
+}
+
+.save:hover {
+    box-shadow: 0 14px 30px -10px rgba(255, 95, 5, 0.7);
+    transform: translateY(-1px);
+}
+
+.save:active {
+    transform: translateY(1px);
+}
+
 /* ---------- Focus ---------- */
 
 :focus-visible {
