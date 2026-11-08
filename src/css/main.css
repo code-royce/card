@@ -1,30 +1,347 @@
-.bio-card {
-    background-color: #4A5D63;
-    padding: 20px;
-    margin: 50px auto;
-    max-width: 700px;
-    text-align: center;
-    color: white;
+/* Palette and type, shared with the personal site (mp1). */
+:root {
+    --charcoal: #1E1F24;
+    --slate: #2C2E35;
+    --off-white: #F4F4F6;
+    --mid-gray: #8A8D96;
+    --hot-pink: #FF2E88;
+    --orange: #FF5F05;
+    --gradient: linear-gradient(100deg, var(--hot-pink), var(--orange));
+    --line: rgba(244, 244, 246, 0.08);
+
+    --font-std: 'Space Grotesk', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    --radius: 22px;
+    --flip-time: 0.7s;
 }
 
-#profile-photo {
-    height: 150px;
-    width: 150px;
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
-.email {
-    font-style: italic;
-    text-align: center;
+html,
+body {
+    margin: 0;
 }
 
-.link {
-    text-align: center;
-}
-
-a {
-    font-weight: bold;
+body {
+    background:
+        radial-gradient(60% 45% at 50% 40%, rgba(255, 46, 136, 0.10), transparent 70%),
+        var(--charcoal);
+    color: var(--off-white);
+    font-family: var(--font-std);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    min-height: 100svh;
 }
 
 p {
-    text-align: left;
+    margin: 0;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+}
+
+.icon {
+    fill: none;
+    flex: none;
+    height: 1.1em;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+    width: 1.1em;
+}
+
+.icon.solid {
+    fill: currentColor;
+    stroke: none;
+}
+
+/* ---------- Layout ---------- */
+
+.stage {
+    display: grid;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+    perspective: 1400px;
+    place-items: center;
+}
+
+.tilt {
+    --rx: 0deg;
+    --ry: 0deg;
+    transform: rotateX(var(--rx)) rotateY(var(--ry));
+    transform-style: preserve-3d;
+    transition: transform 0.2s ease-out;
+    width: min(100%, 380px);
+}
+
+/* Both faces sit in the same grid cell, so the card is as tall as its taller face. */
+.card {
+    display: grid;
+    transform-style: preserve-3d;
+    transition: transform var(--flip-time) cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.face {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background: var(--slate);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6), 0 10px 20px -10px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    grid-area: 1 / 1;
+    min-height: min(600px, calc(100svh - 32px));
+    overflow: hidden;
+    padding: 28px 24px 24px;
+    position: relative;
+}
+
+/* The gradient edge along the top of each face. */
+.face::before {
+    background: var(--gradient);
+    content: '';
+    height: 4px;
+    inset: 0 0 auto 0;
+    position: absolute;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+/* ---------- Front ---------- */
+
+.front {
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+    text-align: center;
+}
+
+.photo-ring {
+    background: var(--gradient);
+    border-radius: 50%;
+    padding: 3px;
+}
+
+.photo {
+    border: 4px solid var(--slate);
+    border-radius: 50%;
+    display: block;
+    height: 168px;
+    object-fit: cover;
+    width: 168px;
+}
+
+.name {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: clamp(3rem, 15vw, 3.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    margin: 28px 0 16px;
+}
+
+.tagline {
+    color: var(--off-white);
+    font-size: 1.05rem;
+    line-height: 1.45;
+    max-width: 26ch;
+    opacity: 0.85;
+}
+
+.flip-hint {
+    align-items: center;
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--mid-gray);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    gap: 8px;
+    margin-top: 36px;
+    padding: 9px 16px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.front:hover .flip-hint,
+.flip-hint:focus-visible {
+    border-color: var(--hot-pink);
+    color: var(--off-white);
+}
+
+.front:hover .flip-hint .icon {
+    transform: translateX(3px);
+}
+
+.flip-hint .icon {
+    transition: transform 0.2s ease;
+}
+
+.pointer-only {
+    display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .touch-only {
+        display: none;
+    }
+
+    .pointer-only {
+        display: inline;
+    }
+}
+
+/* ---------- Back ---------- */
+
+.back {
+    gap: 22px;
+}
+
+.back-head {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mono-name {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    color: var(--mid-gray);
+}
+
+.flip-back {
+    align-items: center;
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    cursor: pointer;
+    display: grid;
+    height: 40px;
+    justify-content: center;
+    transition: border-color 0.2s ease, color 0.2s ease;
+    width: 40px;
+}
+
+.flip-back:hover,
+.flip-back:focus-visible {
+    border-color: var(--hot-pink);
+    color: var(--hot-pink);
+}
+
+.role-title {
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+.role-org {
+    color: var(--mid-gray);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    margin-top: 6px;
+}
+
+.links {
+    border-top: 1px solid var(--line);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.links li {
+    border-bottom: 1px solid var(--line);
+}
+
+.links a {
+    align-items: center;
+    color: var(--off-white);
+    display: flex;
+    gap: 12px;
+    min-height: 48px;
+    padding: 4px 2px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.links .label {
+    font-weight: 500;
+}
+
+.links .value {
+    color: var(--mid-gray);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    margin-left: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.links a:hover,
+.links a:focus-visible {
+    color: var(--hot-pink);
+}
+
+/* ---------- Focus ---------- */
+
+:focus-visible {
+    outline: 2px solid var(--orange);
+    outline-offset: 3px;
+}
+
+.front:focus-visible {
+    outline: none;
+}
+
+/* ---------- Reduced motion: no tilt, crossfade instead of flip ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .tilt,
+    .card,
+    .card.flipped,
+    .back {
+        transform: none;
+        transition: none;
+    }
+
+    .face {
+        transition: opacity 0.25s ease, visibility 0.25s;
+    }
+
+    .back,
+    .card.flipped .front {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .card.flipped .back {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .flip-hint .icon,
+    .front:hover .flip-hint .icon {
+        transform: none;
+    }
 }

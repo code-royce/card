@@ -1,0 +1,17 @@
+{
+  "name": "Jeffry Royce",
+  "firstName": "Jeffry",
+  "lastName": "Royce",
+  "tagline": "Facilities lead by day, CS grad student by night.",
+  "role": "Assistant Director, Infrastructure & Facility Operations",
+  "org": "Siebel School of Computing and Data Science",
+  "orgShort": "Siebel School · UIUC",
+  "university": "University of Illinois Urbana-Champaign",
+  "email": "jroyce@illinois.edu",
+  "github": "https://github.com/code-royce",
+  "githubHandle": "code-royce",
+  "linkedin": "https://www.linkedin.com/in/jeffry-royce/",
+  "linkedinHandle": "jeffry-royce",
+  "siteUrl": "https://code-royce.github.io/mp0/",
+  "photo": "assets/jeffry-royce.jpg"
+}
