@@ -61,3 +61,8 @@ window.addEventListener('pointermove', onPointerMove);
 document.documentElement.addEventListener('pointerleave', resetTilt);
 reducedMotion.addEventListener('change', resetTilt);
 
+
+// Offline support. Skipped in dev so edits don't hide behind the cache.
+if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
+}

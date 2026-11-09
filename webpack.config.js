@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -7,6 +8,7 @@ const contact = require('./src/contact.json');
 
 const CONTACT_PATH = path.resolve(__dirname, 'src/contact.json');
 const PHOTO_PATH = path.resolve(__dirname, 'src', contact.photo);
+const SW_PATH = path.resolve(__dirname, 'src/sw.js');
 const VCARD_FILE = `${contact.firstName}-${contact.lastName}.vcf`.toLowerCase();
 
 // vCard escaping and 75-char line folding.
@@ -52,6 +54,28 @@ class VCardPlugin {
   }
 }
 
+// Emits sw.js with every file in the build and a hash of their contents.
+class ServiceWorkerPlugin {
+  apply(compiler) {
+    const { Compilation, sources } = compiler.webpack;
+    compiler.hooks.thisCompilation.tap('ServiceWorkerPlugin', (compilation) => {
+      compilation.hooks.processAssets.tap(
+        { name: 'ServiceWorkerPlugin', stage: Compilation.PROCESS_ASSETS_STAGE_REPORT },
+        () => {
+          compilation.fileDependencies.add(SW_PATH);
+          const files = Object.keys(compilation.assets).filter((file) => !file.endsWith('.map')).sort();
+          const hash = crypto.createHash('sha256');
+          files.forEach((file) => hash.update(file).update(compilation.assets[file].buffer()));
+          const sw = fs.readFileSync(SW_PATH, 'utf8')
+            .replace('__BUILD__', hash.digest('hex').slice(0, 8))
+            .replace('__FILES__', JSON.stringify(files));
+          compilation.emitAsset('sw.js', new sources.RawSource(sw));
+        },
+      );
+    });
+  }
+}
+
 module.exports = (env, argv) => {
   const isProd = argv && argv.mode === 'production';
 
@@ -90,8 +114,10 @@ module.exports = (env, argv) => {
       new CopyWebpackPlugin({
         patterns: [
           { from: path.resolve(__dirname, 'src/assets'), to: path.resolve(__dirname, 'build/assets'), noErrorOnMissing: true },
+          { from: path.resolve(__dirname, 'src/manifest.json'), to: path.resolve(__dirname, 'build') },
         ],
       }),
+      new ServiceWorkerPlugin(),
     ],
     output: {
       path: path.resolve(__dirname, 'build'),
