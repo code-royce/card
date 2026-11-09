@@ -197,7 +197,9 @@ button {
     font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 0.95;
-    margin: 0;
+    /* Room for the last descender, which the clip would cut */
+    margin: 0 0 -0.15em;
+    padding-bottom: 0.15em;
 }
 
 /* Badge hangs off the right so the name stays centered */
@@ -225,7 +227,7 @@ button {
     font-size: 1rem;
     font-weight: 700;
     line-height: 1.4;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
     max-width: 30ch;
 }
 

@@ -2,7 +2,7 @@
 
 My digital business card, made to be pulled up on a phone. The front has my photo, name, title and school. Tap it and it flips over to my education path, a link to the iCAN program, my contact info, and a button that saves me to their contacts. A line drawing of Siebel Center is etched into the bottom of both sides.
 
-**Live:** https://code-royce.github.io/mp0/
+**Live:** https://code-royce.github.io/card/
 
 ![Front and back of the card at phone size](docs/screenshot.png)
 
@@ -10,10 +10,14 @@ My digital business card, made to be pulled up on a phone. The front has my phot
 
 - Flips between front and back on a tap, a click, or the keyboard (Esc flips it back). On desktop it tilts a little toward the mouse. If your system is set to reduce motion, the tilt is off and the card crossfades instead of flipping.
 - **Save contact** downloads a vCard (`jeffry-royce.vcf`) with my name, title, email, links and photo, so a phone can add me in one step.
+- **Share** opens a QR code for someone across the table to scan, plus a Share link button that opens the phone's share menu (or copies the link on a computer).
+- It installs like an app (Add to Home screen) and works offline, so the card still opens with no signal.
 
 ## Changing the details
 
-Most of the card, and everything in the vCard, comes from [`src/contact.json`](src/contact.json). Edit it there and rebuild. A few display-only bits, like the iCAN banner and the link labels, are written straight into `src/index.html`. The LinkedIn and GitHub logos are in `src/assets/icons.svg`. The photo is `src/assets/siebel-photo.jpg`. The background is `src/assets/operations-etch.png`, a white-on-transparent copy of `operations.jpg`.
+Most of the card, and everything in the vCard, comes from [`src/contact.json`](src/contact.json). Edit it there and rebuild. A few display-only bits, like the iCAN banner and the link labels, are written straight into `src/index.html`. The LinkedIn and GitHub logos are in `src/assets/icons.svg`. The photo is `src/assets/siebel-photo.jpg`. The background is `src/assets/operations-etch.png`, a white-on-transparent copy of `operations.jpg`. The QR code is drawn at build time from `siteUrl`, so it follows the link if the site moves. The fonts are saved in `src/assets/fonts` so nothing loads from Google.
+
+The offline copy lives in `src/sw.js`. Each build changes its cache name when any file changes. After a deploy, the phone fetches the update the next time the card opens and shows it the time after. Bump `VERSION` there to force a fresh cache.
 
 ## Run it locally
 
