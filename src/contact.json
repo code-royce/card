@@ -9,13 +9,11 @@
   "university": "University of Illinois Urbana-Champaign",
   "email": "jroyce@illinois.edu",
   "github": "https://github.com/code-royce",
-  "githubHandle": "code-royce",
-  "linkedin": "https://linkedin.com/in/jeffry-royce",
-  "linkedinHandle": "jeffry-royce",
+  "linkedin": "https://www.linkedin.com/in/jeffry-royce/",
   "pathway": [
     { "degree": "B.S. Mathematics", "school": "NIU" },
-    { "degree": "iCAN Cert", "school": "UIUC", "dot": "pink" },
-    { "degree": "MCS", "school": "UIUC", "dot": "orange" }
+    { "degree": "iCAN Cert", "school": "UIUC" },
+    { "degree": "MCS", "school": "UIUC" }
   ],
   "ican": "https://siebelschool.illinois.edu/academics/graduate/ican",
   "siteUrl": "https://code-royce.github.io/mp0/",

@@ -13,7 +13,7 @@ My digital business card, made to be pulled up on a phone. The front has my phot
 
 ## Changing the details
 
-Everything on the card comes from [`src/contact.json`](src/contact.json): the text, the links, and the vCard. Edit it there and rebuild. The photo is `src/assets/siebel-photo.jpg`. The background is `src/assets/operations-etch.png`, a white-on-transparent copy of `operations.jpg`.
+Most of the card, and everything in the vCard, comes from [`src/contact.json`](src/contact.json). Edit it there and rebuild. A few display-only bits, like the iCAN banner and the link labels, are written straight into `src/index.html`. The LinkedIn and GitHub logos are in `src/assets/icons.svg`. The photo is `src/assets/siebel-photo.jpg`. The background is `src/assets/operations-etch.png`, a white-on-transparent copy of `operations.jpg`.
 
 ## Run it locally
 
