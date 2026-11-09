@@ -1,3 +1,18 @@
+/* Self-hosted so the card looks right offline */
+@font-face {
+    font-display: swap;
+    font-family: 'Space Grotesk';
+    font-weight: 400 700;
+    src: url(../assets/fonts/space-grotesk.woff2) format('woff2');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'JetBrains Mono';
+    font-weight: 400 500;
+    src: url(../assets/fonts/jetbrains-mono.woff2) format('woff2');
+}
+
 /* Palette shared with mp1 */
 :root {
     --charcoal: #1E1F24;
