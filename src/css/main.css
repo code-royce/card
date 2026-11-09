@@ -8,6 +8,17 @@
     --orange: #FF5F05;
     --gradient: linear-gradient(100deg, var(--hot-pink), var(--orange));
     --line: rgba(244, 244, 246, 0.08);
+    --zinc-200: #E4E4E7;
+    --zinc-300: #D4D4D8;
+    --zinc-400: #A1A1AA;
+    --zinc-500: #71717A;
+    --zinc-700: #3F3F46;
+    --zinc-800: #27272A;
+    --zinc-900: #18181B;
+    --pink-400: #F472B6;
+    --pink-500: #EC4899;
+    --orange-400: #FB923C;
+    --orange-500: #F97316;
 
     --font-std: 'Space Grotesk', system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
@@ -104,6 +115,7 @@ button {
     display: flex;
     flex-direction: column;
     grid-area: 1 / 1;
+    isolation: isolate;
     min-height: min(600px, calc(100svh - 32px));
     overflow: hidden;
     padding: 28px 24px 24px;
@@ -116,6 +128,20 @@ button {
     height: 4px;
     inset: 0 0 auto 0;
     position: absolute;
+}
+
+/* Etched linework, behind the content */
+.face::after {
+    background: url(../assets/operations-etch.png) center bottom / 100% auto no-repeat;
+    content: '';
+    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.12));
+    inset: 0;
+    -webkit-mask-image: linear-gradient(transparent 45%, #000 85%);
+    mask-image: linear-gradient(transparent 45%, #000 85%);
+    opacity: 0.15;
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
 }
 
 .back {
@@ -151,19 +177,56 @@ button {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    font-size: clamp(3rem, 15vw, 3.75rem);
+    font-size: clamp(2.5rem, 12vw, 3rem);
     font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 0.95;
-    margin: 28px 0 16px;
+    margin: 0;
 }
 
-.tagline {
-    color: var(--off-white);
-    font-size: 1.05rem;
-    line-height: 1.45;
-    max-width: 26ch;
-    opacity: 0.85;
+/* Badge hangs off the right so the name stays centered */
+.name-wrap {
+    margin: 28px 0 16px;
+    position: relative;
+}
+
+.badge {
+    background: var(--zinc-800);
+    border: 1px solid var(--zinc-700);
+    border-radius: 999px;
+    bottom: 6px;
+    color: var(--zinc-300);
+    font-size: 0.75rem;
+    font-weight: 500;
+    left: 100%;
+    line-height: 1rem;
+    margin-left: 8px;
+    padding: 2px 8px;
+    position: absolute;
+}
+
+.title {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    max-width: 30ch;
+}
+
+.org {
+    color: var(--pink-500);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.program {
+    color: var(--orange-500);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-top: 10px;
+    text-wrap: balance;
 }
 
 .flip-hint {
@@ -188,12 +251,8 @@ button {
     color: var(--off-white);
 }
 
-.front:hover .flip-hint .icon {
-    transform: translateX(3px);
-}
-
-.flip-hint .icon {
-    transition: transform 0.2s ease;
+.flip-glyph {
+    font-size: 1.1em;
 }
 
 .pointer-only {
@@ -222,11 +281,10 @@ button {
     justify-content: space-between;
 }
 
-.mono-name {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    letter-spacing: 0.02em;
-    color: var(--mid-gray);
+.back-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
 }
 
 .flip-back {
@@ -248,45 +306,140 @@ button {
     color: var(--hot-pink);
 }
 
-.role-title {
-    font-size: 1.15rem;
-    font-weight: 500;
-    line-height: 1.3;
-}
-
-.role-org {
-    color: var(--mid-gray);
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    margin-top: 6px;
-}
-
-.qr {
-    align-items: center;
+.pathway {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.micro {
+    color: var(--zinc-500);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* Three glass tiles joined by a line */
+.timeline {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    list-style: none;
     margin: 0;
+    padding: 0;
 }
 
-.qr-tile {
-    background: #fff;
+.timeline li {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(244, 244, 246, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    position: relative;
+}
+
+.timeline li + li::before {
+    background: var(--zinc-700);
+    content: '';
+    height: 1px;
+    left: -11px;
+    position: absolute;
+    top: 50%;
+    width: 10px;
+}
+
+.degree {
+    color: var(--zinc-200);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.school {
+    color: var(--zinc-400);
+    font-size: 10px;
+}
+
+.dot.pink {
+    color: var(--pink-400);
+}
+
+.dot.orange {
+    color: var(--orange-400);
+}
+
+/* iCAN banner. Fill is opaque so the gradient border doesn't show through. */
+.ican {
+    align-items: center;
+    background:
+        linear-gradient(#19191F, #19191F) padding-box,
+        linear-gradient(100deg, var(--pink-500), var(--orange-500)) border-box;
+    border: 1px solid transparent;
     border-radius: 14px;
-    height: 156px;
-    padding: 6px;
-    width: 156px;
+    box-shadow: 0 0 15px rgba(236, 72, 153, 0.12);
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    padding: 12px 14px;
 }
 
-.qr-tile svg {
-    display: block;
-    height: 100%;
-    width: 100%;
+.ican-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.35;
 }
 
-.qr figcaption {
-    color: var(--mid-gray);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
+.ican-sub {
+    color: var(--zinc-400);
+    font-size: 11px;
+    line-height: 1.4;
+    margin-top: 3px;
+}
+
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+    background: var(--pink-500);
+    border-radius: 50%;
+    display: inline-block;
+    height: 7px;
+    margin-right: 8px;
+    vertical-align: 0.1em;
+    width: 7px;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 0 4px rgba(236, 72, 153, 0);
+        opacity: 0.5;
+    }
+}
+
+.learn-more {
+    background: var(--zinc-800);
+    border: 1px solid rgba(63, 63, 70, 0.8);
+    border-radius: 6px;
+    color: var(--orange-400);
+    flex: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.learn-more:hover,
+.learn-more:focus-visible {
+    border-color: var(--zinc-700);
+    color: var(--pink-400);
 }
 
 .links {
@@ -367,11 +520,6 @@ button {
         padding-top: 22px;
     }
 
-    .qr-tile {
-        height: 124px;
-        width: 124px;
-    }
-
     .links a {
         min-height: 44px;
     }
@@ -414,8 +562,7 @@ button {
         visibility: visible;
     }
 
-    .flip-hint .icon,
-    .front:hover .flip-hint .icon {
-        transform: none;
+    .pulse {
+        animation: none;
     }
 }

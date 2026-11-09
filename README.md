@@ -1,6 +1,6 @@
 # Bio card
 
-My digital business card, made to be pulled up on a phone. The front has my photo and name. Tap it and it flips over to my contact info, a QR code that opens the card on someone else's phone, and a button that saves me to their contacts.
+My digital business card, made to be pulled up on a phone. The front has my photo, name, title and school. Tap it and it flips over to my education path, a link to the iCAN program, my contact info, and a button that saves me to their contacts. A line drawing of Siebel Center is etched into the bottom of both sides.
 
 **Live:** https://code-royce.github.io/mp0/
 
@@ -10,11 +10,10 @@ My digital business card, made to be pulled up on a phone. The front has my phot
 
 - Flips between front and back on a tap, a click, or the keyboard (Esc flips it back). On desktop it tilts a little toward the mouse. If your system is set to reduce motion, the tilt is off and the card crossfades instead of flipping.
 - **Save contact** downloads a vCard (`jeffry-royce.vcf`) with my name, title, email, links and photo, so a phone can add me in one step.
-- The QR code is drawn in the browser from the page's own address, so it keeps working if the site moves. No outside services.
 
 ## Changing the details
 
-Everything on the card comes from [`src/contact.json`](src/contact.json): the text, the links, and the vCard. Edit it there and rebuild. The photo is `src/assets/jeffry-royce.jpg`.
+Everything on the card comes from [`src/contact.json`](src/contact.json): the text, the links, and the vCard. Edit it there and rebuild. The photo is `src/assets/siebel-photo.jpg`. The background is `src/assets/operations-etch.png`, a white-on-transparent copy of `operations.jpg`.
 
 ## Run it locally
 

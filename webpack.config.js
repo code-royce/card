@@ -17,8 +17,8 @@ function buildVCard(info, photoBase64) {
   const lines = [
     'BEGIN:VCARD',
     'VERSION:3.0',
-    `N:${esc(info.lastName)};${esc(info.firstName)};;;`,
-    `FN:${esc(info.name)}`,
+    `N:${esc(info.lastName)};${esc(info.firstName)};;;${esc(info.credentials)}`,
+    `FN:${esc(`${info.name}, ${info.credentials}`)}`,
     `ORG:${esc(info.university)};${esc(info.org)}`,
     `TITLE:${esc(info.role)}`,
     `EMAIL;TYPE=INTERNET,WORK:${info.email}`,
@@ -80,7 +80,11 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'src/index.html'),
         inject: 'body',
-        templateParameters: { contact, vcardFile: VCARD_FILE },
+        // Re-read so contact.json edits show without a restart.
+        templateParameters: () => ({
+          contact: JSON.parse(fs.readFileSync(CONTACT_PATH, 'utf8')),
+          vcardFile: VCARD_FILE,
+        }),
       }),
       new VCardPlugin(),
       new CopyWebpackPlugin({

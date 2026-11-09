@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="<%- contact.name %>. <%- contact.tagline %>">
+  <meta name="description" content="<%- contact.name %>, <%- contact.role %>.">
   <meta name="theme-color" content="#1E1F24">
   <title><%- contact.name %></title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,32 +22,47 @@
           <div class="photo-ring">
             <img class="photo" src="<%- contact.photo %>" alt="<%- contact.name %>" width="168" height="168">
           </div>
-          <h1 class="name"><%- contact.firstName %><br><%- contact.lastName %></h1>
-          <p class="tagline"><%- contact.tagline %></p>
+          <div class="name-wrap">
+            <h1 class="name"><%- contact.firstName %><br><%- contact.lastName %></h1>
+            <span class="badge"><%- contact.credentials %></span>
+          </div>
+          <p class="title"><%- contact.role %></p>
+          <p class="org"><%- contact.org %></p>
+          <p class="program"><%- contact.program %> · <%- contact.university %></p>
           <button class="flip-hint" id="flip-open" type="button" aria-controls="back" aria-expanded="false">
-            <span class="touch-only">tap to connect</span><span class="pointer-only">click to connect</span>
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <span class="touch-only">Tap</span><span class="pointer-only">Click</span> for Contact &amp; Links
+            <span class="flip-glyph" aria-hidden="true">↷</span>
           </button>
         </section>
 
         <!-- Back -->
         <section class="face back" id="back" aria-label="Contact <%- contact.name %>" aria-hidden="true" inert>
           <header class="back-head">
-            <p class="mono-name"><%- contact.name %></p>
+            <h2 class="back-title">Connect with <%- contact.firstName %></h2>
             <button class="flip-back" id="flip-close" type="button" aria-label="Flip back to the front">
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.4-6.4L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.4 6.4L3 16M3 21v-5h5"/></svg>
             </button>
           </header>
 
-          <div class="role">
-            <p class="role-title"><%- contact.role %></p>
-            <p class="role-org"><%- contact.orgShort %></p>
+          <div class="pathway">
+            <p class="micro">Pathway &amp; Education</p>
+            <ol class="timeline">
+              <% contact.pathway.forEach((step) => { %>
+              <li>
+                <span class="degree"><%- step.degree %></span>
+                <span class="school"><span class="dot <%- step.dot %>" aria-hidden="true">•</span> <%- step.school %></span>
+              </li>
+              <% }) %>
+            </ol>
           </div>
 
-          <figure class="qr">
-            <div class="qr-tile" id="qr" role="img" aria-label="QR code that opens this card"></div>
-            <figcaption>scan to open this card</figcaption>
-          </figure>
+          <div class="ican">
+            <div>
+              <p class="ican-title"><span class="pulse" aria-hidden="true"></span>Transitioning into CS via iCAN</p>
+              <p class="ican-sub">Graduate path for non-CS backgrounds</p>
+            </div>
+            <a class="learn-more" href="<%- contact.ican %>">Learn More <span aria-hidden="true">↗</span></a>
+          </div>
 
           <ul class="links">
             <li>
@@ -61,7 +76,7 @@
               <a href="<%- contact.linkedin %>">
                 <svg class="icon solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
                 <span class="label">LinkedIn</span>
-                <span class="value"><%- contact.linkedinHandle %></span>
+                <span class="value">linkedin.com/in/<%- contact.linkedinHandle %></span>
               </a>
             </li>
             <li>
