@@ -7,10 +7,11 @@ const CACHE = `card-v${VERSION}-__BUILD__`;
 // Filled in by the build.
 const FILES = __FILES__;
 
+// Straight from the server, so a stale browser copy can't get saved.
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE)
-            .then((cache) => cache.addAll(['./', ...FILES]))
+            .then((cache) => cache.addAll(['./', ...FILES].map((file) => new Request(file, { cache: 'reload' }))))
             .then(() => self.skipWaiting()),
     );
 });

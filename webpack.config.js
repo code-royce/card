@@ -138,7 +138,8 @@ module.exports = (env, argv) => {
     ],
     output: {
       path: path.resolve(__dirname, 'build'),
-      filename: 'bundle.js',
+      // Hashed so a cached bundle can't outlive its page.
+      filename: 'bundle[contenthash].js',
       assetModuleFilename: 'assets/[name][contenthash][ext][query]',
     },
   };
