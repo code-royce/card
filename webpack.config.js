@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const qrcode = require('qrcode-generator');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -10,6 +11,22 @@ const CONTACT_PATH = path.resolve(__dirname, 'src/contact.json');
 const PHOTO_PATH = path.resolve(__dirname, 'src', contact.photo);
 const SW_PATH = path.resolve(__dirname, 'src/sw.js');
 const VCARD_FILE = `${contact.firstName}-${contact.lastName}.vcf`.toLowerCase();
+
+// QR code as an SVG, with the standard four-module quiet zone.
+function buildQr(url) {
+  const qr = qrcode(0, 'M');
+  qr.addData(url);
+  qr.make();
+  const count = qr.getModuleCount();
+  const size = count + 8;
+  let modules = '';
+  for (let row = 0; row < count; row++) {
+    for (let col = 0; col < count; col++) {
+      if (qr.isDark(row, col)) modules += `M${col + 4} ${row + 4}h1v1h-1z`;
+    }
+  }
+  return `<svg viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges" aria-hidden="true"><rect width="${size}" height="${size}" fill="#fff"/><path d="${modules}"/></svg>`;
+}
 
 // vCard escaping and 75-char line folding.
 const esc = (value) => String(value).replace(/[\\,;]/g, (c) => `\\${c}`).replace(/\n/g, '\\n');
@@ -105,10 +122,10 @@ module.exports = (env, argv) => {
         template: path.resolve(__dirname, 'src/index.html'),
         inject: 'body',
         // Re-read so contact.json edits show without a restart.
-        templateParameters: () => ({
-          contact: JSON.parse(fs.readFileSync(CONTACT_PATH, 'utf8')),
-          vcardFile: VCARD_FILE,
-        }),
+        templateParameters: () => {
+          const info = JSON.parse(fs.readFileSync(CONTACT_PATH, 'utf8'));
+          return { contact: info, qr: buildQr(info.siteUrl), vcardFile: VCARD_FILE };
+        },
       }),
       new VCardPlugin(),
       new CopyWebpackPlugin({

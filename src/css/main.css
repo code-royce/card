@@ -137,7 +137,8 @@ button {
     position: relative;
 }
 
-.face::before {
+.face::before,
+.share-panel::before {
     background: var(--gradient);
     content: '';
     height: 4px;
@@ -244,7 +245,14 @@ button {
     text-wrap: balance;
 }
 
-.flip-hint {
+.actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 36px;
+}
+
+.pill {
     align-items: center;
     background: none;
     border: 1px solid var(--line);
@@ -255,36 +263,23 @@ button {
     font-family: var(--font-mono);
     font-size: 0.8rem;
     gap: 8px;
-    margin-top: 36px;
     padding: 9px 16px;
     transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.front:hover .flip-hint,
-.flip-hint:focus-visible {
+/* The whole front flips, so hovering it lights Flip */
+.front:hover:not(:has(.share:hover)) .flip,
+.pill:hover,
+.pill:focus-visible {
     border-color: var(--hot-pink);
     color: var(--off-white);
 }
 
 /* Decorative glyphs: the "/ ''" form keeps screen readers quiet */
-.flip-hint::after {
+.flip::after {
     content: '↷';
     content: '↷' / '';
     font-size: 1.1em;
-}
-
-.pointer-only {
-    display: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .touch-only {
-        display: none;
-    }
-
-    .pointer-only {
-        display: inline;
-    }
 }
 
 /* ---------- Back ---------- */
@@ -554,6 +549,103 @@ button {
     }
 }
 
+/* ---------- Share ---------- */
+
+/* The dialog is a clear frame; its padding counts as overlay */
+.share-sheet {
+    background: none;
+    border: 0;
+    color: var(--off-white);
+    max-height: none;
+    max-width: none;
+    opacity: 0;
+    padding: 16px;
+    transform: translateY(12px) scale(0.98);
+    transition: opacity 0.2s ease, transform 0.2s ease, overlay 0.2s allow-discrete, display 0.2s allow-discrete;
+    width: min(100%, 360px);
+}
+
+.share-sheet::backdrop {
+    backdrop-filter: blur(6px);
+    background: rgba(30, 31, 36, 0.85);
+    opacity: 0;
+    transition: opacity 0.2s ease, overlay 0.2s allow-discrete, display 0.2s allow-discrete;
+}
+
+.share-sheet[open],
+.share-sheet[open]::backdrop {
+    opacity: 1;
+}
+
+.share-sheet[open] {
+    transform: none;
+}
+
+@starting-style {
+    .share-sheet[open],
+    .share-sheet[open]::backdrop {
+        opacity: 0;
+    }
+
+    .share-sheet[open] {
+        transform: translateY(12px) scale(0.98);
+    }
+}
+
+.share-panel {
+    align-items: center;
+    background: var(--slate);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6), 0 10px 20px -10px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 28px 24px 8px;
+    position: relative;
+    text-align: center;
+}
+
+.share-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 18px;
+}
+
+/* Quiet zone is drawn into the SVG */
+.qr {
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 6px;
+    width: 100%;
+}
+
+.qr svg {
+    display: block;
+    height: auto;
+    width: 100%;
+}
+
+.share-hint {
+    color: var(--mid-gray);
+    font-size: 0.875rem;
+    margin-top: 14px;
+}
+
+.share-panel .actions {
+    margin-top: 20px;
+}
+
+.share-status {
+    color: var(--zinc-400);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    margin-top: 6px;
+    min-height: 1.5em;
+    overflow-wrap: anywhere;
+}
+
 /* ---------- Focus ---------- */
 
 :focus-visible {
@@ -593,5 +685,17 @@ button {
 
     .ican-title::before {
         animation: none;
+    }
+
+    /* The sheet fades without moving */
+    .share-sheet,
+    .share-sheet[open] {
+        transform: none;
+    }
+
+    @starting-style {
+        .share-sheet[open] {
+            transform: none;
+        }
     }
 }

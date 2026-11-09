@@ -30,6 +30,54 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
+// Share sheet.
+const shareButton = document.getElementById('share-open');
+const sheet = document.getElementById('share');
+const shareLink = document.getElementById('share-link');
+const shareClose = document.getElementById('share-close');
+const shareStatus = document.getElementById('share-status');
+
+shareButton.addEventListener('click', (event) => {
+    // Clicks on the front flip the card; this one shouldn't.
+    event.stopPropagation();
+    shareStatus.textContent = '';
+    sheet.showModal();
+});
+
+shareClose.addEventListener('click', () => sheet.close());
+sheet.addEventListener('close', () => shareButton.focus({ preventScroll: true }));
+
+// Overlay taps land on the dialog itself.
+sheet.addEventListener('click', (event) => {
+    if (event.target === sheet) sheet.close();
+});
+
+// Keep Tab inside the sheet.
+sheet.addEventListener('keydown', (event) => {
+    if (event.key !== 'Tab') return;
+    const edge = event.shiftKey ? shareLink : shareClose;
+    if (document.activeElement === edge) {
+        (event.shiftKey ? shareClose : shareLink).focus();
+        event.preventDefault();
+    }
+});
+
+// Phones get the share menu; elsewhere the link is copied.
+shareLink.addEventListener('click', async () => {
+    const url = shareLink.dataset.url;
+    if (navigator.share) {
+        // Rejects when the menu is dismissed.
+        await navigator.share({ title: document.title, url }).catch(() => {});
+        return;
+    }
+    try {
+        await navigator.clipboard.writeText(url);
+        shareStatus.textContent = 'Link copied.';
+    } catch {
+        shareStatus.textContent = `Copy this link: ${url}`;
+    }
+});
+
 // Desktop tilt.
 const tilt = document.getElementById('tilt');
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -60,7 +108,6 @@ function onPointerMove(event) {
 window.addEventListener('pointermove', onPointerMove);
 document.documentElement.addEventListener('pointerleave', resetTilt);
 reducedMotion.addEventListener('change', resetTilt);
-
 
 // Offline support. Skipped in dev so edits don't hide behind the cache.
 if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {

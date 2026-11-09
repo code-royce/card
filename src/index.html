@@ -29,9 +29,13 @@
           <p class="title"><%- contact.role %></p>
           <p class="org"><%- contact.org %></p>
           <p class="program"><%- contact.program %> · <%- contact.university %></p>
-          <button class="flip-hint" id="flip-open" type="button" aria-controls="back" aria-expanded="false">
-            <span class="touch-only">Tap</span><span class="pointer-only">Click</span> for Contact &amp; Links
-          </button>
+          <div class="actions">
+            <button class="pill flip" id="flip-open" type="button" aria-controls="back" aria-expanded="false">Flip</button>
+            <button class="pill share" id="share-open" type="button" aria-haspopup="dialog" aria-controls="share">
+              Share
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/></svg>
+            </button>
+          </div>
         </section>
 
         <!-- Back -->
@@ -96,6 +100,23 @@
       </div>
     </div>
   </main>
+
+  <!-- Share -->
+  <dialog class="share-sheet" id="share" aria-labelledby="share-name">
+    <div class="share-panel">
+      <h2 class="share-name" id="share-name"><%- contact.name %></h2>
+      <div class="qr" role="img" aria-label="QR code for <%- contact.siteUrl %>"><%= qr %></div>
+      <p class="share-hint">Scan to open my card</p>
+      <div class="actions">
+        <button class="pill" id="share-link" type="button" data-url="<%- contact.siteUrl %>">
+          Share link
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/></svg>
+        </button>
+        <button class="pill" id="share-close" type="button">Close</button>
+      </div>
+      <p class="share-status" id="share-status" role="status"></p>
+    </div>
+  </dialog>
 </body>
 
 </html>
