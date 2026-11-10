@@ -1,7 +1,7 @@
 {
   "id": "/card/",
   "name": "Jeffry Royce",
-  "short_name": "Jeffry Royce",
+  "short_name": "vCard",
   "description": "Jeffry Royce's contact card.",
   "start_url": "/card/",
   "scope": "/card/",
